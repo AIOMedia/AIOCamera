@@ -64,6 +64,6 @@ function startStreaming(io) {
     app.set('watchingFile', true);
 
     fs.watchFile(__dirname + '/public/stream/image_stream.jpg', function(current, previous) {
-        io.sockets.emit('liveStream', 'public/stream/image_stream.jpg?_t=' + (Math.random() * 100000));
+        io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
     });
 }
