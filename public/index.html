@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport" />
+
+        <title>AIOMedia - Camera</title>
+
+        <!-- Theme style -->
+        <link type="text/css" rel="stylesheet" href="css/app.min.css" />
+
+        <!-- Libraries (see Gruntfile.js to know what's included in js/lib.js) -->
+        <script type="text/javascript" src="js/lib.min.js"></script>
+
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+            var socket = io();
+            socket.on('liveStream', function (url) {
+                $('#stream').attr('src', url);
+                $('.start').hide();
+            });
+
+            function startStream() {
+                socket.emit('start-stream');
+                $('.start').hide();
+            }
+        </script>
+    </head>
+
+    <body class="container-fluid">
+        <!--<button type="button" class="btn btn-info start" onclick="startStream()">Start Camera</button>-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="" id="stream" />
+                    </div>
+                    <div class="panel-footer text-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

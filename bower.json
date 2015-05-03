@@ -1,0 +1,17 @@
+{
+    "name": "aiomedia-camera",
+    "version": "0.0.1",
+    "homepage": "https://github.com/AIOMedia/AIOCamera",
+    "authors": [
+        "Axel Penin"
+    ],
+    "description": "Raspberry Camera manager",
+    "main": "./public/index.html",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "jquery": "latest",
+        "bootstrap": "latest",
+        "font-awesome": "latest"
+    }
+}
