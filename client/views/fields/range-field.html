@@ -1,0 +1,16 @@
+<div class="range-field row">
+    <div class="col-md-1 col-sm-1 col-xs-2 text-left" data-ng-if="showMilestones">
+        {{ min }}
+    </div>
+
+    <div data-ng-class="{ 'col-md-10 col-sm-10 col-xs-8': showMilestones, 'col-md-12 col-sm-12 col-xs-12': !showMilestones }">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="{{ min }}" aria-valuemax="{{ max }}" style="width: 60%;">
+                {{ value }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 col-sm-1 col-xs-2 text-right" data-ng-if="showMilestones">
+        {{ max }}
+    </div>
+</div>

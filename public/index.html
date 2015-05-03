@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-ng-app="AioCamera" data-ng-cloak="">
     <head>
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport" />
@@ -12,8 +12,11 @@
 
         <!-- Libraries (see Gruntfile.js to know what's included in js/lib.js) -->
         <script type="text/javascript" src="js/lib.min.js"></script>
+        <script type="text/javascript" src="js/app.min.js"></script>
 
+        <!-- Includes real-time sockets -->
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
         <script type="text/javascript">
             var socket = io();
             socket.on('liveStream', function (url) {
@@ -28,19 +31,6 @@
         </script>
     </head>
 
-    <body class="container-fluid">
-        <button type="button" class="btn btn-primary start" onclick="startStream()">Start Camera</button>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <img src="" id="stream" />
-                    </div>
-                    <div class="panel-footer text-center">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </body>
+    <!-- Let Angular manage the views -->
+    <body data-ng-view=""></body>
 </html>

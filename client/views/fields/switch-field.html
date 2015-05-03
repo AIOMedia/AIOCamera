@@ -1,0 +1,11 @@
+<div class="switch-field">
+    <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" data-ng-class="{'active': !value }" data-ng-click="value = false">no</button>
+        </div>
+
+        <div class="btn-group" role="group">
+            <button type="button" class="btn" data-ng-class="{'active': value, 'btn-primary': value, 'btn-default': !value }" data-ng-click="value = true">yes</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="radio-field">
+    <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group" role="group" data-ng-repeat="(optionValue, optionLabel) in options">
+            <button type="button" class="btn" data-ng-class="{'btn-primary active': value == optionValue, 'btn-default': value != optionValue }" data-ng-click="setValue(optionValue)">{{ optionLabel }}</button>
+        </div>
+    </div>
+
+    <input type="hidden" value="{{ value }}" />
+</div>

@@ -26,9 +26,10 @@
         "raspicam": "~0.2.13"
     },
     "devDependencies": {
-        "bower": "~1.3.12",
+        "bower": "~1.4.1",
         "grunt": "~0.4.1",
         "grunt-contrib-concat": "~0.5.0",
+        "grunt-contrib-uglify": "~0.7.0",
         "grunt-contrib-less": "~1.0.0"
     }
 }
