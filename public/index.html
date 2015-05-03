@@ -16,19 +16,6 @@
 
         <!-- Includes real-time sockets -->
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
-        <script type="text/javascript">
-            var socket = io();
-            socket.on('liveStream', function (url) {
-                $('#stream').attr('src', url);
-                $('.start').hide();
-            });
-
-            function startStream() {
-                socket.emit('start-stream');
-                $('.start').hide();
-            }
-        </script>
     </head>
 
     <!-- Let Angular manage the views -->

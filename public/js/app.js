@@ -53,6 +53,8 @@ angular.module('AioCamera').controller('ParametersController', [
             width: 1000,
             height: 1000,
 
+            fullscreen: true,
+
             flipY: true,
             flipX: false,
 
@@ -83,7 +85,7 @@ angular.module('AioCamera').controller('ParametersController', [
             colourEffect: null, // U:V (range 0 to 255)
 
             // Specify the metering mode used for the preview and capture
-            meteringMode: 'average',
+            meteringMode: 'average'
         };
 
         this.rotations = {
@@ -146,7 +148,7 @@ angular.module('AioCamera').controller('ParametersController', [
 
         this.meteringModes = [
             'average', // Average the whole frame for metering
-            'spot', //Spot metering
+            'spot', // Spot metering
             'backlit', // Assume a backlit image
             'matrix', // Matrix metering
         ];
@@ -158,7 +160,17 @@ angular.module('AioCamera').controller('ParametersController', [
  */
 angular.module('AioCamera').controller('RecorderController', [
     function RecorderController() {
+        var socket = io();
 
+        this.previewUrl = null;
+
+        socket.on('liveStream', function (url) {
+            this.previewUrl = url;
+        }.bind(this));
+
+        this.start = function () {
+            socket.emit('start-stream');
+        };
     }
 ]);
 // File : client/controllers/RecordsController.js
