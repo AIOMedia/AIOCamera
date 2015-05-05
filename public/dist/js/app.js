@@ -1,5 +1,5 @@
 (function() {
-// File : client/app.js
+// File : public/client/app.js
 /**
  * AIOCamera Application
  * Manages Raspberry Pi Camera
@@ -7,13 +7,13 @@
 angular.module('AioCamera', [
     'ngRoute'
 ]);
-// File : client/constants.js
+// File : public/client/constants.js
 /**
  * Constants
  */
 angular.module('AioCamera')
-    .constant('VIEW_PATH', '../client/views');
-// File : client/routes.js
+    .constant('VIEW_PATH', 'client/views');
+// File : public/client/routes.js
 /**
  * Routes
  */
@@ -43,7 +43,7 @@ angular.module('AioCamera').config([
         });
     }
 ]);
-// File : client/controllers/ParametersController.js
+// File : public/client/controllers/ParametersController.js
 /**
  * Parameters Controller
  */
@@ -154,7 +154,7 @@ angular.module('AioCamera').controller('ParametersController', [
         ];
     }
 ]);
-// File : client/controllers/RecorderController.js
+// File : public/client/controllers/RecorderController.js
 /**
  * Recorder Controller
  */
@@ -173,7 +173,7 @@ angular.module('AioCamera').controller('RecorderController', [
         };
     }
 ]);
-// File : client/controllers/RecordsController.js
+// File : public/client/controllers/RecordsController.js
 /**
  * Records Controller
  */
@@ -182,7 +182,7 @@ angular.module('AioCamera').controller('RecordsController', [
         this.records = [];
     }
 ]);
-// File : client/directives/RadioFieldDirective.js
+// File : public/client/directives/RadioFieldDirective.js
 /**
  * Radio Field
  */
@@ -207,7 +207,7 @@ angular.module('AioCamera').directive('radioField', [
         };
     }
 ]);
-// File : client/directives/RangeFieldDirective.js
+// File : public/client/directives/RangeFieldDirective.js
 /**
  * Range Field
  */
@@ -245,7 +245,7 @@ angular.module('AioCamera').directive('rangeField', [
         };
     }
 ]);
-// File : client/directives/SwitchFieldDirective.js
+// File : public/client/directives/SwitchFieldDirective.js
 /**
  * Range Field
  */

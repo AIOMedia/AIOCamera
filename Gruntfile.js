@@ -20,7 +20,7 @@ module.exports = function (grunt) {
                     'bower_components/angular/angular.js',
                     'bower_components/angular-route/angular-route.js',
                 ],
-                dest: '<%= distFolder %>/js/lib.js'
+                dest: '<%= distFolder %>/dist/js/lib.js'
             },
 
             lib_min: {
@@ -30,7 +30,7 @@ module.exports = function (grunt) {
                     'bower_components/angular/angular.min.js',
                     'bower_components/angular-route/angular-route.min.js'
                 ],
-                dest: '<%= distFolder %>/js/lib.min.js'
+                dest: '<%= distFolder %>/dist/js/lib.min.js'
             },
 
             // Concatenate app
@@ -41,13 +41,13 @@ module.exports = function (grunt) {
                     footer: '\n})();'
                 },
                 src: [
-                    'client/app.js',
-                    'client/constants.js',
-                    'client/routes.js',
+                    'public/client/app.js',
+                    'public/client/constants.js',
+                    'public/client/routes.js',
 
-                    'client/**/*.js'
+                    'public/client/**/*.js'
                 ],
-                dest: '<%= distFolder %>/js/app.js'
+                dest: '<%= distFolder %>/dist/js/app.js'
             }
         },
 
@@ -56,9 +56,9 @@ module.exports = function (grunt) {
             // Uglify app
             app: {
                 src: [
-                    '<%= distFolder %>/js/app.js'
+                    '<%= distFolder %>/dist/js/app.js'
                 ],
-                dest: '<%= distFolder %>/js/app.min.js'
+                dest: '<%= distFolder %>/dist/js/app.min.js'
             }
         },
 
@@ -73,7 +73,20 @@ module.exports = function (grunt) {
                 src: [
                     '<%= distFolder %>/less/app.less'
                 ],
-                dest: '<%= distFolder %>/css/app.min.css'
+                dest: '<%= distFolder %>/dist/css/app.min.css'
+            }
+        },
+
+        // Copy fonts to public dir
+        copy: {
+            font_awesome: {
+                expand: true,
+                dot: true,
+                cwd: 'bower_components/font-awesome/fonts/',
+                src: [
+                    '*.*'
+                ],
+                dest: '<%= distFolder %>/dist/fonts/'
             }
         }
     });
@@ -82,7 +95,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     // Register our own custom task alias.
-    grunt.registerTask('build', ['concat', 'uglify', 'less']);
+    grunt.registerTask('build', ['concat', 'uglify', 'less', 'copy']);
 };

@@ -2,4 +2,4 @@
  * Constants
  */
 angular.module('AioCamera')
-    .constant('VIEW_PATH', '../client/views');
+    .constant('VIEW_PATH', 'client/views');
