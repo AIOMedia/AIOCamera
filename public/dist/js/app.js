@@ -13,47 +13,140 @@ angular.module('AioCamera', [
  */
 angular.module('AioCamera')
     .constant('VIEW_PATH', 'client/views');
-// File : public/client/routes.js
+// File : public/client/src/Camera/controllers/CameraController.js
 /**
- * Routes
+ * Camera Controller
  */
-angular.module('AioCamera').config([
-    '$routeProvider',
-    'VIEW_PATH',
-    function($routeProvider, VIEW_PATH) {
-        // Recorder view
-        $routeProvider.when('/', {
-            templateUrl  : VIEW_PATH + '/recorder.html',
-            controller   : 'RecorderController',
-            controllerAs : 'recorderCtrl'
-        });
+angular.module('AioCamera').controller('CameraController', [
+    function CameraController() {
+        /**
+         * Orientation of the viewport (`portrait` or `landscape`)
+         * @type {string}
+         */
+        this.orientation = null;
 
-        // Parameters view
-        $routeProvider.when('/parameters', {
-            templateUrl  : VIEW_PATH + '/parameters.html',
-            controller   : 'ParametersController',
-            controllerAs : 'parametersCtrl'
-        });
+        /**
+         * Camera mode
+         * @type {string}
+         */
+        this.mode = 'streaming';
 
-        // Records view
-        $routeProvider.when('/records', {
-            templateUrl  : VIEW_PATH + '/records.html',
-            controller   : 'RecordsController',
-            controllerAs : 'recordsCtrl'
-        });
+        /**
+         * List of modes available
+         * @type {string[]}
+         */
+        this.modesAvailable = [ 'streaming', 'photo', 'video' ];
+
+        /**
+         * Camera preview settings
+         * @type {{fillColor: string, url: string, fullscreen: boolean}}
+         */
+        this.preview = {
+            fillColor : '#000100',
+            url       : 'camera/tmp/snapshot.jpg',
+            fullscreen: true
+        };
+
+        /**
+         * Flags for opened window
+         * @type {{config: boolean, records: boolean}}
+         */
+        this.openedWindow = {
+            config: false,
+            records: false
+        };
+
+        /**
+         * Open or Close the configuration window
+         */
+        this.toggleConfigWindow = function () {
+            if (!this.openedWindow.config) {
+                // Open window => Close other window if needed
+                this.openedWindow.records = false;
+            }
+
+            this.openedWindow.config = !this.openedWindow.config;
+        };
+
+        /**
+         * Open or Close the records window
+         */
+        this.toggleRecordsWindow = function () {
+            if (!this.openedWindow.records) {
+                // Open window => Close other window if needed
+                this.openedWindow.config = false;
+            }
+
+            this.openedWindow.records = !this.openedWindow.records;
+        };
+
+        /**
+         * Enable or disable fullscreen
+         */
+        this.toggleFullscreen = function () {
+            this.preview.fullscreen = !this.preview.fullscreen;
+        };
     }
 ]);
-// File : public/client/controllers/ParametersController.js
+// File : public/client/src/Camera/directives/CameraDirective.js
+/**
+ * Camera Directive
+ */
+angular.module('AioCamera').directive('camera', [
+    '$window',
+    'VIEW_PATH',
+    function CameraDirective($window, VIEW_PATH) {
+        function getOrientation(viewport) {
+            var orientation = 'landscape';
+            if (viewport.innerHeight > viewport.innerWidth){
+                orientation = 'portrait';
+            }
+
+            return orientation;
+        }
+
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: VIEW_PATH + '/Camera/camera.html',
+            controller: 'CameraController',
+            controllerAs: 'cameraCtrl',
+            scope: {},
+            link: function (scope, element, attrs, cameraCtrl) {
+                // Calculate viewport orientation
+                cameraCtrl.orientation = getOrientation($window);
+                $($window).on('resize', function () {
+                    cameraCtrl.orientation = getOrientation($window);
+                    scope.$apply();
+                });
+
+                // Initialize real-time connection to the server
+                var socket = io();
+
+                // Catch server events
+                socket.on('snapshot', function (url) {
+                    this.preview.url = url;
+
+                    scope.$apply();
+                }.bind(this));
+
+                // Directive destructor
+                scope.$on('$destroy', function handleDestroyEvent() {
+                    $($window).off('resize');
+                });
+            }
+        };
+    }
+]);
+// File : public/client/src/CameraConfig/controllers/CameraConfigController.js
 /**
  * Parameters Controller
  */
-angular.module('AioCamera').controller('ParametersController', [
-    function ParametersController() {
+angular.module('AioCamera').controller('CameraConfigController', [
+    function CameraConfigController() {
         this.parameters = {
             width: 1000,
             height: 1000,
-
-            fullscreen: true,
 
             flipY: true,
             flipX: false,
@@ -154,39 +247,64 @@ angular.module('AioCamera').controller('ParametersController', [
         ];
     }
 ]);
-// File : public/client/controllers/RecorderController.js
+// File : public/client/src/CameraConfig/directives/CameraConfigDirective.js
 /**
- * Recorder Controller
+ * Camera Directive
  */
-angular.module('AioCamera').controller('RecorderController', [
-    '$scope',
-    function RecorderController($scope) {
-        var socket = io();
+angular.module('AioCamera').directive('cameraConfig', [
+    'VIEW_PATH',
+    function CameraConfigDirective(VIEW_PATH) {
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: VIEW_PATH + '/CameraConfig/camera-config.html',
+            controller: 'CameraConfigController',
+            controllerAs: 'cameraConfigCtrl',
+            scope: {
+                config: '='
+            },
+            link: function (scope, element, attrs, cameraConfigCtrl) {
+                // Directive destructor
+                scope.$on('$destroy', function handleDestroyEvent() {
 
-        this.previewUrl = null;
-
-        socket.on('snapshot', function (url) {
-            console.log(url);
-            this.previewUrl = url;
-
-            $scope.$apply();
-        }.bind(this));
-
-        /*this.start = function () {
-            socket.emit('start-stream');
-        };*/
+                });
+            }
+        };
     }
 ]);
-// File : public/client/controllers/RecordsController.js
+// File : public/client/src/CameraRecord/controllers/CameraRecordsController.js
 /**
  * Records Controller
  */
-angular.module('AioCamera').controller('RecordsController', [
-    function RecordsController() {
+angular.module('AioCamera').controller('CameraRecordsController', [
+    function CameraRecordsController() {
         this.records = [];
     }
 ]);
-// File : public/client/directives/RadioFieldDirective.js
+// File : public/client/src/CameraRecord/directives/CameraRecordsDirective.js
+/**
+ * Camera Directive
+ */
+angular.module('AioCamera').directive('cameraRecords', [
+    'VIEW_PATH',
+    function CameraRecordsDirective(VIEW_PATH) {
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: VIEW_PATH + '/CameraRecord/camera-records.html',
+            controller: 'CameraRecordsController',
+            controllerAs: 'cameraRecordsCtrl',
+            scope: {},
+            link: function (scope, element, attrs, cameraRecordsCtrl) {
+                // Directive destructor
+                scope.$on('$destroy', function handleDestroyEvent() {
+
+                });
+            }
+        };
+    }
+]);
+// File : public/client/src/Form/directives/RadioFieldDirective.js
 /**
  * Radio Field
  */
@@ -196,7 +314,7 @@ angular.module('AioCamera').directive('radioField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/radio-field.html',
+            templateUrl: VIEW_PATH + '/Form/radio-field.html',
             scope: {
                 value : '=?',
                 options: '='
@@ -211,7 +329,7 @@ angular.module('AioCamera').directive('radioField', [
         };
     }
 ]);
-// File : public/client/directives/RangeFieldDirective.js
+// File : public/client/src/Form/directives/RangeFieldDirective.js
 /**
  * Range Field
  */
@@ -228,7 +346,7 @@ angular.module('AioCamera').directive('rangeField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/range-field.html',
+            templateUrl: VIEW_PATH + '/Form/range-field.html',
             scope: {
                 step           : '=?',
                 min            : '=?',
@@ -249,7 +367,7 @@ angular.module('AioCamera').directive('rangeField', [
         };
     }
 ]);
-// File : public/client/directives/SwitchFieldDirective.js
+// File : public/client/src/Form/directives/SwitchFieldDirective.js
 /**
  * Range Field
  */
@@ -259,7 +377,7 @@ angular.module('AioCamera').directive('switchField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/switch-field.html',
+            templateUrl: VIEW_PATH + '/Form/switch-field.html',
             scope: {
                 value : '=?'
             },

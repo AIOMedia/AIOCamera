@@ -42,7 +42,7 @@ io.on('connection', function (socket) {
     // Take a snapshot
     var camera = new RaspiCam({
         mode: 'photo',
-        output: 'public/camera/tmp/image.jpg',
+        output: 'public/camera/tmp/snapshot.jpg',
         encoding: 'jpg',
         timeout: 0 // take the picture immediately
     });
@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
         console.log("photo image captured with filename: " + filename);
 
         // Send image to clients
-        io.sockets.emit('snapshot', 'camera/tmp/image.jpg?_t=' + (Math.random() * 100000));
+        io.sockets.emit('snapshot', 'camera/tmp/snapshot.jpg?_t=' + (Math.random() * 100000));
     });
 
     camera.on('stop', function () {
@@ -70,7 +70,20 @@ io.on('connection', function (socket) {
 
     // Bind events to socket
     socket.on('disconnect', function() {
+        console.log('Client disconnect...');
+
+        var snapshotFile = 'public/camera/tmp/snapshot.jpg';
+
+        /*if (fs.existsSync(snapshotFile)) {
+            // There is a snapshot for this client => delete it
+            fs.unlink(snapshotFile, function (err) {
+                if (err) throw err;
+                console.log('delete "public/camera/tmp/snapshot.jpg"');
+            });
+        }*/
+
         delete sockets[socket.id];
+        console.log('disconnected');
     });
 });
 

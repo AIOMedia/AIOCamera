@@ -7,7 +7,7 @@ angular.module('AioCamera').directive('switchField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/switch-field.html',
+            templateUrl: VIEW_PATH + '/Form/switch-field.html',
             scope: {
                 value : '=?'
             },

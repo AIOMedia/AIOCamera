@@ -7,7 +7,7 @@ angular.module('AioCamera').directive('radioField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/radio-field.html',
+            templateUrl: VIEW_PATH + '/Form/radio-field.html',
             scope: {
                 value : '=?',
                 options: '='

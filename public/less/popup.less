@@ -1,0 +1,54 @@
+.popup-container {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding-bottom: @grid-gutter-width;
+    padding-top: 64px + floor(@grid-gutter-width / 2); // Height of the controls bar
+    padding-left: 5%;
+    padding-right: 5%;
+
+    .popup {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background-color: @body-bg;
+        border-radius: @border-radius-base;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.75);
+        padding-top: 51px; // Height of the header
+
+        .popup-header {
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            left: 0;
+            right: 0;
+            font-size: 17px;
+            margin: 0;
+            padding: floor(@grid-gutter-width / 2);
+            border-bottom: 1px solid #ddd;
+            height: 51px;
+            background-color: @body-bg;
+            border-radius: @border-radius-base @border-radius-base 0 0;
+
+            .popup-icon, .popup-title {
+                vertical-align: middle;
+            }
+
+            .popup-title {
+                margin-left: 10px;
+            }
+        }
+
+        .popup-body {
+            padding: 0 floor(@grid-gutter-width / 2);
+            position: relative;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+        }
+    }
+}

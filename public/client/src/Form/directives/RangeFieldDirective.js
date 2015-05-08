@@ -14,7 +14,7 @@ angular.module('AioCamera').directive('rangeField', [
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: VIEW_PATH + '/fields/range-field.html',
+            templateUrl: VIEW_PATH + '/Form/range-field.html',
             scope: {
                 step           : '=?',
                 min            : '=?',

@@ -43,9 +43,8 @@ module.exports = function (grunt) {
                 src: [
                     'public/client/app.js',
                     'public/client/constants.js',
-                    'public/client/routes.js',
 
-                    'public/client/**/*.js'
+                    'public/client/src/**/*.js'
                 ],
                 dest: '<%= distFolder %>/dist/js/app.js'
             }
@@ -83,6 +82,16 @@ module.exports = function (grunt) {
                 expand: true,
                 dot: true,
                 cwd: 'bower_components/font-awesome/fonts/',
+                src: [
+                    '*.*'
+                ],
+                dest: '<%= distFolder %>/dist/fonts/'
+            },
+
+            glyphicon: {
+                expand: true,
+                dot: true,
+                cwd: 'bower_components/bootstrap/fonts/',
                 src: [
                     '*.*'
                 ],

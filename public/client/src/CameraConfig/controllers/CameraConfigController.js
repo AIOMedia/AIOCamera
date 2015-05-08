@@ -1,13 +1,11 @@
 /**
  * Parameters Controller
  */
-angular.module('AioCamera').controller('ParametersController', [
-    function ParametersController() {
+angular.module('AioCamera').controller('CameraConfigController', [
+    function CameraConfigController() {
         this.parameters = {
             width: 1000,
             height: 1000,
-
-            fullscreen: true,
 
             flipY: true,
             flipX: false,

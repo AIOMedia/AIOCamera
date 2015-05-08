@@ -1,79 +1,73 @@
-html {
+html, body {
     position: relative;
     height: 100%;
     width: 100%;
 }
 
-body {
-    position: relative;
-    height: 100%;
-    width: 100%;
+.btn {
+    outline: none !important;
 }
 
-.page {
+.camera {
     position: relative;
     height: 100%;
     width: 100%;
 
-    &.has-heading {
-        padding-top: @navbar-height;
-    }
-
-    &.page-navbar-bottom {
-        padding-bottom: @navbar-height;
-    }
-
-    .page-heading {
+    .controls {
+        padding: 10px;
+        z-index: 3;
         position: fixed;
-        vertical-align: middle;
-        background: @navbar-inverse-bg;
-        color: @navbar-inverse-color;
-        height: @navbar-height;
         top: 0;
         left: 0;
-        right: 0;
-
-        display: table;
         width: 100%;
-        z-index: @zindex-navbar;
 
-        h1 {
-            padding-left: floor(@grid-gutter-width / 2);
-            position: relative;
-            height: 100%;
-            font-size: 16px;
-            font-weight: 100;
-            margin: 0;
-            display: table-cell;
+        .btn-control {
+            display: inline-block;
+            font-size: 22px;
+            line-height: 22px;
+            color: white;
+            width: 42px;
+            padding: 10px 0;
             vertical-align: middle;
+            text-align: center;
+            border-radius: 21px;
+            border: 1px solid white;
+            outline: none;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.75), 0 0 4px rgba(0, 0, 0, 0.75);
+            text-shadow: 0 0 4px rgba(0, 0, 0, 0.75);
+            background: none;
 
-            .page-title, .page-icon {
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .page-icon {
-                padding-right: floor(@grid-gutter-width / 2);
-            }
-        }
-
-        .page-close {
-            color: @navbar-inverse-brand-color;
-            display: table-cell;
-            top: 0;
-            right: 0;
-            height: 100%;
-            width: 15px;
-            padding: 0 floor(@grid-gutter-width / 2);
-            vertical-align: middle;
-
-            &:hover,
-            &:focus {
-                color: @navbar-inverse-brand-hover-color;
-                background-color: @navbar-inverse-brand-hover-bg;
+            &.active {
+                color: @brand-primary;
+                border: 1px solid @brand-primary;
+                box-shadow: inset 0 0 4px darken(@brand-primary, 30%), 0 0 4px darken(@brand-primary, 30%);
+                text-shadow: 0 0 4px darken(@brand-primary, 30%);
             }
         }
     }
+
+    .preview {
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.no-record {
+    display: block;
+    padding: floor(@grid-gutter-width / 2) 0;
+    text-align: center;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .form-horizontal {
@@ -85,8 +79,12 @@ body {
         padding-bottom: @form-group-margin-bottom;
 
 
-        &:first-child {
-            /*border-top: 1px solid #ddd;*/
+        &.odd {
+            background-color: #f8f8f8;
+        }
+
+        &:last-child {
+            border-bottom: none;
         }
 
         .control-label {

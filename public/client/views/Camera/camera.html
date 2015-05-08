@@ -1,0 +1,53 @@
+<div class="camera">
+    <div class="controls">
+        <div class="pull-left">
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.mode = 'streaming'" data-ng-class="{ active: 'streaming' == cameraCtrl.mode }">
+                <span class="fa fa-fw fa-eye"></span>
+                <span class="sr-only">streaming</span>
+            </button>
+
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.mode = 'photo'" data-ng-class="{ active: 'photo' == cameraCtrl.mode }">
+                <span class="fa fa-fw fa-camera"></span>
+                <span class="sr-only">photo</span>
+            </button>
+
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.mode = 'video'" data-ng-class="{ active: 'video' == cameraCtrl.mode }">
+                <span class="fa fa-fw fa-video-camera"></span>
+                <span class="sr-only">video</span>
+            </button>
+        </div>
+
+        <div class="pull-right">
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.toggleRecordsWindow()" data-ng-class="{ active: cameraCtrl.openedWindow.records }">
+                <span class="fa fa-fw fa-list"></span>
+                <span class="sr-only">list of records</span>
+            </button>
+
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.toggleConfigWindow()" data-ng-class="{ active: cameraCtrl.openedWindow.config }" style="margin-right: 15px;">
+                <span class="fa fa-fw fa-cog"></span>
+                <span class="sr-only">parameters</span>
+            </button>
+
+            <button type="button" class="btn-control" data-ng-click="cameraCtrl.toggleFullscreen()" data-ng-class="{ active: cameraCtrl.preview.fullscreen }">
+                <span class="fa fa-fw fa-expand"></span>
+                <span class="sr-only">fullscreen</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="preview text-center" style="background-color: {{ cameraCtrl.preview.fillColor }};">
+        <img data-ng-src="{{ cameraCtrl.preview.url }}" data-ng-if="cameraCtrl.preview.url" data-ng-class="{ 'full-width': 'portrait' == cameraCtrl.orientation, 'full-height': 'landscape' == cameraCtrl.orientation }"/>
+    </div>
+
+    <div class="controls-mode text-center">
+
+    </div>
+
+    <div class="popup-container" data-ng-if="cameraCtrl.openedWindow.config || cameraCtrl.openedWindow.records">
+        <!-- Camera configuration -->
+        <camera-config  data-ng-if="cameraCtrl.openedWindow.config"></camera-config>
+
+        <!-- Camera records -->
+        <camera-records data-ng-if="cameraCtrl.openedWindow.records"></camera-records>
+    </div>
+</div>
