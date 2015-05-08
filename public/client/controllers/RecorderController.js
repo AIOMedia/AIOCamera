@@ -9,7 +9,6 @@ angular.module('AioCamera').controller('RecorderController', [
         this.previewUrl = null;
 
         socket.on('snapshot', function (url) {
-            console.log(url);
             this.previewUrl = url;
 
             $scope.$apply();
