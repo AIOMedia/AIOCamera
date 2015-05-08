@@ -11,7 +11,8 @@
         "nodejs",
         "api",
         "home-improvement",
-        "media"
+        "raspberry-pi",
+        "camera"
     ],
     "homepage": "https://github.com/AIOMedia/AIOCamera",
     "repository": {
