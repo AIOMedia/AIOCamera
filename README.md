@@ -39,7 +39,9 @@ For accessing the camera features :
 
 To stream camera video over `rtmp` protocol :
 * C++ RTMP Server (crtmp) - [Official site](http://www.rtmpd.com)
-* ffmpeg - [Official site](https://www.ffmpeg.org) - **ATTENTION : You'll need to install ffmpeg from source to make sure `libavcodec` contains H264 libraries**
+* ffmpeg - [Official site](https://www.ffmpeg.org)
+
+**ATTENTION : You'll need to install ffmpeg from source to make sure `libavcodec` contains H264 libraries**
 
 And eventually for the client application :
 * Node.js - [Download & Install Node.js](http://www.nodejs.org/download/)
