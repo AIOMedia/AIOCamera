@@ -2,6 +2,7 @@
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Dependencies Status](https://img.shields.io/david/AIOMedia/AIOCamera.svg?style=flat-square)](https://david-dm.org/AIOMedia/AIOCamera)
+[![devDependency Status](https://david-dm.org/AIOMedia/AIOCamera/dev-status.svg?style=flat-square)](https://david-dm.org/AIOMedia/AIOCamera#info=devDependencies)
 
 Web interface for accessing the Raspberry Camera.
 
