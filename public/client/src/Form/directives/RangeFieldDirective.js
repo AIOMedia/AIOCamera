@@ -16,6 +16,7 @@ angular.module('AioCamera').directive('rangeField', [
                 min            : '@',
                 max            : '@',
                 step           : '@?',
+                showButtons    : '@?',
                 showMilestones : '@?',
                 showValue      : '@?'
             },
@@ -35,6 +36,10 @@ angular.module('AioCamera').directive('rangeField', [
 
                 scope.$watch('step', function (newValue) {
                     rangeFieldCtrl.setStep(newValue);
+                }, true);
+
+                scope.$watch('showButtons', function (newValue) {
+                    rangeFieldCtrl.setShowButtons(newValue);
                 }, true);
 
                 scope.$watch('showMilestones', function (newValue) {
@@ -116,31 +121,36 @@ angular.module('AioCamera').directive('rangeField', [
                     }
                 }
 
-                // Initialize events
+                function keyPressed(event) {
+                    if (37 == event.keyCode) {
+                        // Left arrow pressed => get previous value
+                        rangeFieldCtrl.previousValue();
+                        scope.$apply();
+                    } else if (39 == event.keyCode) {
+                        // Next arrow pressed => get next value
+                        rangeFieldCtrl.nextValue();
+                        scope.$apply();
+                    }
+                }
+
+                function bindKeyPressedEvents(event) {
+                    $window.addEventListener('keydown', keyPressed, true);
+                }
+
+                function removeKeyPressedEvents(event) {
+                    $window.removeEventListener('keydown', keyPressed, true);
+                }
+
+                // Controls : change value by dragging the progress bar cursor
                 $window.addEventListener('mousedown', dragStart, true);
                 $window.addEventListener('mouseup', dragEnd, true);
 
+                // Controls : change value by clicking anywhere on the progress bar
                 $progressBar.get()[0].addEventListener('click', click, true);
 
-                $progressHandler.get()[0].addEventListener('focus', function (event) {
-                    console.log('focusin');
-
-                    $window.addEventListener('keydown', function (event) {
-
-                    }, true);
-
-                    $window.addEventListener('keypress', function (event) {
-
-                    }, true);
-
-                    $window.addEventListener('keyup', function (event) {
-
-                    }, true);
-                }, true);
-
-                $progressHandler.get()[0].addEventListener('blur', function (event) {
-                    console.log('focusout');
-                }, true);
+                // Controls : change value by pressing left or right arrow keys
+                $progressHandler.get()[0].addEventListener('focus', bindKeyPressedEvents, true);
+                $progressHandler.get()[0].addEventListener('blur', removeKeyPressedEvents, true);
 
                 // Directive destroy event
                 scope.$on('$destroy', function() {
@@ -148,6 +158,9 @@ angular.module('AioCamera').directive('rangeField', [
                     $window.removeEventListener('mouseup', dragEnd, true);
 
                     $progressBar.get()[0].removeEventListener('click', click, true);
+
+                    $progressHandler.get()[0].removeEventListener('focus', bindKeyPressedEvents, true);
+                    $progressHandler.get()[0].removeEventListener('blur', removeKeyPressedEvents, true);
                 });
             }
         };

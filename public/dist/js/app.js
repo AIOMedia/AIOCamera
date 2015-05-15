@@ -29,13 +29,13 @@ angular.module('AioCamera').controller('CameraController', [
          * Camera mode
          * @type {string}
          */
-        this.mode = 'streaming';
+        this.mode = 'photo';
 
         /**
          * List of modes available
          * @type {string[]}
          */
-        this.modesAvailable = [ 'streaming', 'photo', 'video' ];
+        this.modesAvailable = [ 'photo', 'video' ];
 
         this.config = {
             width: 1000,
@@ -359,10 +359,16 @@ angular.module('AioCamera').controller('RangeFieldController', [
         this.steps = null;
 
         /**
+         * Display buttons to increment/decrement value
+         * @type {boolean}
+         */
+        this.showButtons = true;
+
+        /**
          * Display min and max milestones
          * @type {boolean}
          */
-        this.showMilestones = true;
+        this.showMilestones = false;
 
         /**
          * Display current value
@@ -374,11 +380,47 @@ angular.module('AioCamera').controller('RangeFieldController', [
          * Set value of the field
          * @param {number} value
          */
-        this.setValue = function (value) {
+        this.setValue = function setValue(value) {
             value = angular.isDefined(value) ? Number(value) : null;
             if (value !== this.value) {
                 this.value = value;
                 this.calculateFill();
+            }
+        };
+
+        /**
+         * Jump to previous step
+         */
+        this.previousValue = function previousValue() {
+            console.log('previous');
+            var currentStep = (this.value - this.min) / this.step;
+
+            console.log(currentStep);
+
+            // Decrement step
+            currentStep--;
+
+            if (currentStep >= 0) {
+                // Calculate value for new step
+                var newValue = this.min + (currentStep * this.step);
+                this.setValue(newValue);
+            }
+        };
+
+        /**
+         * Jump to next step
+         */
+        this.nextValue = function nextValue() {
+            console.log('next');
+            var currentStep = (this.value - this.min) / this.step;
+
+            // Increment step
+            currentStep++;
+
+            if (currentStep <= this.steps) {
+                // Calculate value for new step
+                var newValue = this.min + (currentStep * this.step);
+                this.setValue(newValue);
             }
         };
 
@@ -421,19 +463,27 @@ angular.module('AioCamera').controller('RangeFieldController', [
         };
 
         /**
-         * Set show value flag
-         * @param {number} value
+         * Set show buttons flag
+         * @param {boolean} value
          */
-        this.setShowValue = function setShowValue(value) {
-            this.showValue = !(angular.isDefined(value) && ('false' == value || !value));
+        this.setShowButtons = function setShowMilestones(value) {
+            this.showButtons = !(angular.isDefined(value) && ('false' == value || !value));
         };
 
         /**
          * Set show milestones flag
-         * @param {number} value
+         * @param {boolean} value
          */
         this.setShowMilestones = function setShowMilestones(value) {
-            this.showMilestones = !(angular.isDefined(value) && ('false' == value || !value));
+            this.showMilestones = (angular.isDefined(value) && !('false' == value || !value));
+        };
+
+        /**
+         * Set show value flag
+         * @param {boolean} value
+         */
+        this.setShowValue = function setShowValue(value) {
+            this.showValue = !(angular.isDefined(value) && ('false' == value || !value));
         };
 
         /**
@@ -523,6 +573,7 @@ angular.module('AioCamera').directive('rangeField', [
                 min            : '@',
                 max            : '@',
                 step           : '@?',
+                showButtons    : '@?',
                 showMilestones : '@?',
                 showValue      : '@?'
             },
@@ -542,6 +593,10 @@ angular.module('AioCamera').directive('rangeField', [
 
                 scope.$watch('step', function (newValue) {
                     rangeFieldCtrl.setStep(newValue);
+                }, true);
+
+                scope.$watch('showButtons', function (newValue) {
+                    rangeFieldCtrl.setShowButtons(newValue);
                 }, true);
 
                 scope.$watch('showMilestones', function (newValue) {
@@ -623,31 +678,36 @@ angular.module('AioCamera').directive('rangeField', [
                     }
                 }
 
-                // Initialize events
+                function keyPressed(event) {
+                    if (37 == event.keyCode) {
+                        // Left arrow pressed => get previous value
+                        rangeFieldCtrl.previousValue();
+                        scope.$apply();
+                    } else if (39 == event.keyCode) {
+                        // Next arrow pressed => get next value
+                        rangeFieldCtrl.nextValue();
+                        scope.$apply();
+                    }
+                }
+
+                function bindKeyPressedEvents(event) {
+                    $window.addEventListener('keydown', keyPressed, true);
+                }
+
+                function removeKeyPressedEvents(event) {
+                    $window.removeEventListener('keydown', keyPressed, true);
+                }
+
+                // Controls : change value by dragging the progress bar cursor
                 $window.addEventListener('mousedown', dragStart, true);
                 $window.addEventListener('mouseup', dragEnd, true);
 
+                // Controls : change value by clicking anywhere on the progress bar
                 $progressBar.get()[0].addEventListener('click', click, true);
 
-                $progressHandler.get()[0].addEventListener('focus', function (event) {
-                    console.log('focusin');
-
-                    $window.addEventListener('keydown', function (event) {
-
-                    }, true);
-
-                    $window.addEventListener('keypress', function (event) {
-
-                    }, true);
-
-                    $window.addEventListener('keyup', function (event) {
-
-                    }, true);
-                }, true);
-
-                $progressHandler.get()[0].addEventListener('blur', function (event) {
-                    console.log('focusout');
-                }, true);
+                // Controls : change value by pressing left or right arrow keys
+                $progressHandler.get()[0].addEventListener('focus', bindKeyPressedEvents, true);
+                $progressHandler.get()[0].addEventListener('blur', removeKeyPressedEvents, true);
 
                 // Directive destroy event
                 scope.$on('$destroy', function() {
@@ -655,6 +715,9 @@ angular.module('AioCamera').directive('rangeField', [
                     $window.removeEventListener('mouseup', dragEnd, true);
 
                     $progressBar.get()[0].removeEventListener('click', click, true);
+
+                    $progressHandler.get()[0].removeEventListener('focus', bindKeyPressedEvents, true);
+                    $progressHandler.get()[0].removeEventListener('blur', removeKeyPressedEvents, true);
                 });
             }
         };

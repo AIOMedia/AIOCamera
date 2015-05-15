@@ -46,10 +46,16 @@ angular.module('AioCamera').controller('RangeFieldController', [
         this.steps = null;
 
         /**
+         * Display buttons to increment/decrement value
+         * @type {boolean}
+         */
+        this.showButtons = true;
+
+        /**
          * Display min and max milestones
          * @type {boolean}
          */
-        this.showMilestones = true;
+        this.showMilestones = false;
 
         /**
          * Display current value
@@ -61,11 +67,43 @@ angular.module('AioCamera').controller('RangeFieldController', [
          * Set value of the field
          * @param {number} value
          */
-        this.setValue = function (value) {
+        this.setValue = function setValue(value) {
             value = angular.isDefined(value) ? Number(value) : null;
             if (value !== this.value) {
                 this.value = value;
                 this.calculateFill();
+            }
+        };
+
+        /**
+         * Jump to previous step
+         */
+        this.previousValue = function previousValue() {
+            var currentStep = (this.value - this.min) / this.step;
+
+            // Decrement step
+            currentStep--;
+
+            if (currentStep >= 0) {
+                // Calculate value for new step
+                var newValue = this.min + (currentStep * this.step);
+                this.setValue(newValue);
+            }
+        };
+
+        /**
+         * Jump to next step
+         */
+        this.nextValue = function nextValue() {
+            var currentStep = (this.value - this.min) / this.step;
+
+            // Increment step
+            currentStep++;
+
+            if (currentStep <= this.steps) {
+                // Calculate value for new step
+                var newValue = this.min + (currentStep * this.step);
+                this.setValue(newValue);
             }
         };
 
@@ -108,19 +146,27 @@ angular.module('AioCamera').controller('RangeFieldController', [
         };
 
         /**
-         * Set show value flag
-         * @param {number} value
+         * Set show buttons flag
+         * @param {boolean} value
          */
-        this.setShowValue = function setShowValue(value) {
-            this.showValue = !(angular.isDefined(value) && ('false' == value || !value));
+        this.setShowButtons = function setShowMilestones(value) {
+            this.showButtons = !(angular.isDefined(value) && ('false' == value || !value));
         };
 
         /**
          * Set show milestones flag
-         * @param {number} value
+         * @param {boolean} value
          */
         this.setShowMilestones = function setShowMilestones(value) {
-            this.showMilestones = !(angular.isDefined(value) && ('false' == value || !value));
+            this.showMilestones = (angular.isDefined(value) && !('false' == value || !value));
+        };
+
+        /**
+         * Set show value flag
+         * @param {boolean} value
+         */
+        this.setShowValue = function setShowValue(value) {
+            this.showValue = !(angular.isDefined(value) && ('false' == value || !value));
         };
 
         /**
