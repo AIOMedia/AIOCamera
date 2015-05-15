@@ -29,8 +29,19 @@ $ sudo apt-get upgrade
 ```
 
 ### Software
+
+I use [Raspbian](https://www.raspbian.org) on my Raspberry Pi, but it should work on other distributions.
+Please report if you encounter a problem with others.
+
+For accessing the camera features :
 * raspistill - see Raspberry Camera documentation for more information
 * raspivid - see Raspberry Camera documentation for more information
+
+To stream camera video over `rtmp` protocol :
+* C++ RTMP Server (crtmp) - [Official site](http://www.rtmpd.com)
+* ffmpeg - [Official site](https://www.ffmpeg.org) - **ATTENTION : You'll need to install ffmpeg from source to make sure `libavcodec` contains H264 libraries**
+
+And eventually for the client application :
 * Node.js - [Download & Install Node.js](http://www.nodejs.org/download/)
 * NPM Package Manager - [Download & Install NPM](https://www.npmjs.org/doc/README.html)
 
@@ -74,7 +85,7 @@ Your application should run on the 3000 port so in your browser just go to http:
 
 ## Development
 
-In order to be able to rebuild the application after you have made changes, you need to install project's `devDependencies` :
+In order to be able to rebuild the application after you have made changes, you need to install the project's `devDependencies` :
 
 ```
 $ npm install --dev
@@ -86,7 +97,7 @@ Install client's libraries :
 $ bower install
 ```
 
-Build application (e.g. publish public files, build JS & CSS) :
+Now you can build application (e.g. publish public files, build JS & CSS) :
 
 ```
 $ grunt build
