@@ -7,110 +7,145 @@
     <div class="popup-body">
         <form class="form-horizontal">
             <div class="form-group odd">
-                <label class="col-md-2 col-xs-12 control-label" for="">Resolution</label>
-                <div class="col-md-5 col-sm-6 col-xs-6">
+                <label class="col-md-3 col-xs-12 control-label" for="">
+                    <span class="fa fa-fw fa-desktop"></span>
+                    Resolution
+                </label>
+                <div class="col-md-4 col-sm-6 col-xs-6">
                     <input type="text" class="form-control text-center" placeholder="width" />
                 </div>
 
-                <div class="col-md-5 col-sm-6 col-xs-6">
+                <div class="col-md-4 col-md-offset-1 col-sm-6 col-xs-6">
                     <input type="text" class="form-control text-center" placeholder="height" />
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="">Flip horizontally</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-arrows-h"></span>
+                    Flip horizontally
+                </label>
+                <div class="col-md-9">
                     <switch-field data-value="cameraConfigCtrl.parameters.flipX"></switch-field>
                 </div>
             </div>
 
             <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">Flip vertically</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-arrows-v"></span>
+                    Flip vertically
+                </label>
+                <div class="col-md-9">
                     <switch-field data-value="cameraConfigCtrl.parameters.flipY"></switch-field>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="">Rotation</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-repeat"></span>
+                    Rotation
+                </label>
+                <div class="col-md-9">
                     <radio-field data-value="cameraConfigCtrl.parameters.rotation" data-options="cameraConfigCtrl.rotations"></radio-field>
                 </div>
             </div>
 
             <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">Image sharpness</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-barcode"></span>
+                    Image sharpness
+                </label>
+                <div class="col-md-9">
                     <range-field data-min="-100" data-max="100" data-value="cameraConfigCtrl.parameters.sharpness"></range-field>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="">Image contrast</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-adjust"></span>
+                    Image contrast
+                </label>
+                <div class="col-md-9">
                     <range-field data-min="-100" data-max="100" data-value="cameraConfigCtrl.parameters.contrast"></range-field>
                 </div>
             </div>
 
             <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">Image brightness</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-lightbulb-o"></span>
+                    Image brightness
+                </label>
+                <div class="col-md-9">
                     <range-field data-min="0" data-max="100" data-value="cameraConfigCtrl.parameters.brightness"></range-field>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label" for="">Image saturation</label>
-                <div class="col-md-10">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-tint"></span>
+                    Image saturation
+                </label>
+                <div class="col-md-9">
                     <range-field data-min="-100" data-max="100" data-value="cameraConfigCtrl.parameters.saturation"></range-field>
                 </div>
             </div>
 
-            <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">ISO</label>
-                <div class="col-md-10">
-                    <range-field data-min="100" data-max="800" data-value="cameraConfigCtrl.parameters.iso"></range-field>
-                </div>
-            </div>
-
             <div class="form-group">
-                <label class="col-md-2 control-label" for="">Video stabilisation</label>
-                <div class="col-md-10">
-                    <switch-field data-value="cameraConfigCtrl.parameters.stabilisation"></switch-field>
-                </div>
-            </div>
-
-            <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">EV compensation</label>
-                <div class="col-md-10">
-                    <range-field data-min="-25" data-max="25" data-value="parametersCtrl.parameters.evCompensation"></range-field>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="">Exposure mode</label>
-                <div class="col-md-3 col-md-offset-7">
-                    <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.exposureMode" data-ng-options="exposureMode for exposureMode in cameraConfigCtrl.exposureModes"></select>
-                </div>
-            </div>
-
-            <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">Automatic White Balance</label>
-                <div class="col-md-3 col-md-offset-7">
-                    <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.awb" data-ng-options="awbMode for awbMode in cameraConfigCtrl.awbModes"></select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="">Image effect</label>
-                <div class="col-md-3 col-md-offset-7">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-image"></span>
+                    Image effect
+                </label>
+                <div class="col-md-4 col-md-offset-5">
                     <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.imageEffect" data-ng-options="imageEffect for imageEffect in cameraConfigCtrl.imageEffects"></select>
                 </div>
             </div>
 
             <div class="form-group odd">
-                <label class="col-md-2 control-label" for="">Metering mode</label>
-                <div class="col-md-3 col-md-offset-7">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-sun-o"></span>
+                    ISO
+                </label>
+                <div class="col-md-9">
+                    <range-field data-min="100" data-max="800" data-value="cameraConfigCtrl.parameters.iso"></range-field>
+                </div>
+            </div>
+
+            <div class="form-group odd">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa-stack">
+                        <i class="fa fa-sun-o fa-stack-1x"></i>
+                        <i class="fa fa-adjust fa-stack-1x"></i>
+                    </span>
+                    EV compensation
+                </label>
+                <div class="col-md-9">
+                    <range-field data-min="-25" data-max="25" data-value="cameraConfigCtrl.parameters.evCompensation"></range-field>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-certificate"></span>
+                    Exposure mode
+                </label>
+                <div class="col-md-4 col-md-offset-5">
+                    <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.exposureMode" data-ng-options="exposureMode for exposureMode in cameraConfigCtrl.exposureModes"></select>
+                </div>
+            </div>
+
+            <div class="form-group odd">
+                <label class="col-md-3 control-label" for="">
+                    <span class="fa fa-fw fa-sliders"></span>
+                    Automatic White Balance (AWB)
+                </label>
+                <div class="col-md-4 col-md-offset-5">
+                    <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.awb" data-ng-options="awbMode for awbMode in cameraConfigCtrl.awbModes"></select>
+                </div>
+            </div>
+
+            <div class="form-group odd">
+                <label class="col-md-3 control-label" for="">Metering mode</label>
+                <div class="col-md-4 col-md-offset-5">
                     <select class="form-control" data-ng-model="cameraConfigCtrl.parameters.meteringMode" data-ng-options="meteringMode for meteringMode in cameraConfigCtrl.meteringModes"></select>
                 </div>
             </div>

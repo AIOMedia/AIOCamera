@@ -14,6 +14,10 @@ angular.module('AioCamera').directive('cameraConfig', [
                 config: '='
             },
             link: function (scope, element, attrs, cameraConfigCtrl) {
+                scope.$watch('config', function (newValue) {
+                    cameraConfigCtrl.parameters = newValue;
+                });
+
                 // Directive destructor
                 scope.$on('$destroy', function handleDestroyEvent() {
 

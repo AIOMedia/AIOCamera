@@ -1,16 +1,24 @@
 <div class="range-field row">
-    <div class="col-md-1 col-sm-1 col-xs-2 text-left" data-ng-if="showMilestones">
-        {{ min }}
+    <div class="col-md-1 col-sm-1 col-xs-2 text-left" data-ng-if="rangeField.showMilestones">
+        <!--{{ rangeField.min }}-->
+        <button type="button" class="btn btn-default btn-xs">
+            <span class="fa fa-minus"></span>
+        </button>
     </div>
 
-    <div data-ng-class="{ 'col-md-10 col-sm-10 col-xs-8': showMilestones, 'col-md-12 col-sm-12 col-xs-12': !showMilestones }">
+    <div data-ng-class="{ 'col-md-10 col-sm-10 col-xs-8': rangeField.showMilestones, 'col-md-12 col-sm-12 col-xs-12': !rangeField.showMilestones }">
         <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="{{ min }}" aria-valuemax="{{ max }}" style="width: 60%;">
-                {{ value }}
+            <div class="progress-bar" data-ng-class="{ full: rangeField.value == rangeField.max }" role="progressbar" aria-valuenow="{{ rangeField.value }}" aria-valuemin="{{ rangeField.min }}" aria-valuemax="{{ rangeField.max }}" style="width: {{ rangeField.fill }}%;">
+                <span data-ng-if="rangeField.showValue && rangeField.value != rangeField.min">{{ rangeField.value }}</span>
             </div>
+
+            <a href="" role="btn" class="progress-handler btn btn-default"></a>
         </div>
     </div>
-    <div class="col-md-1 col-sm-1 col-xs-2 text-right" data-ng-if="showMilestones">
-        {{ max }}
+    <div class="col-md-1 col-sm-1 col-xs-2 text-right" data-ng-if="rangeField.showMilestones">
+        <!--{{rangeField. max }}-->
+        <button type="button" class="btn btn-default btn-xs">
+            <span class="fa fa-plus"></span>
+        </button>
     </div>
 </div>

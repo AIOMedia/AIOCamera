@@ -3,42 +3,7 @@
  */
 angular.module('AioCamera').controller('CameraConfigController', [
     function CameraConfigController() {
-        this.parameters = {
-            width: 1000,
-            height: 1000,
-
-            flipY: true,
-            flipX: false,
-
-            rotation: 0,
-
-            // Set the sharpness of the image (-100 to 100)
-            sharpness: 0,
-
-            // Set the contrast of the image (-100 to 100)
-            contrast: 0,
-
-            // Set the brightness of the image (0 is black, 100 is white)
-            brightness: 50,
-
-            saturation: 0, // -100 to 100
-            iso: 100, // 100 to 800
-            stabilisation: false, // VIDEO MODE ONLY
-            evCompensation: 0, // -25 to 25
-            exposureMode: 'auto',
-
-            // Set automatic white balance (AWB)
-            awb: 'auto',
-
-            // Set image effect
-            imageEffect: 'none',
-
-            // Set colour effect <U:V
-            colourEffect: null, // U:V (range 0 to 255)
-
-            // Specify the metering mode used for the preview and capture
-            meteringMode: 'average'
-        };
+        this.parameters = {};
 
         this.rotations = {
             0: '0°',

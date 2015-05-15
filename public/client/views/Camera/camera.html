@@ -1,11 +1,6 @@
 <div class="camera">
     <div class="controls">
         <div class="pull-left">
-            <button type="button" class="btn-control" data-ng-click="cameraCtrl.mode = 'streaming'" data-ng-class="{ active: 'streaming' == cameraCtrl.mode }">
-                <span class="fa fa-fw fa-eye"></span>
-                <span class="sr-only">streaming</span>
-            </button>
-
             <button type="button" class="btn-control" data-ng-click="cameraCtrl.mode = 'photo'" data-ng-class="{ active: 'photo' == cameraCtrl.mode }">
                 <span class="fa fa-fw fa-camera"></span>
                 <span class="sr-only">photo</span>
@@ -45,7 +40,7 @@
 
     <div class="popup-container" data-ng-if="cameraCtrl.openedWindow.config || cameraCtrl.openedWindow.records">
         <!-- Camera configuration -->
-        <camera-config  data-ng-if="cameraCtrl.openedWindow.config"></camera-config>
+        <camera-config data-config="cameraCtrl.config" data-ng-if="cameraCtrl.openedWindow.config"></camera-config>
 
         <!-- Camera records -->
         <camera-records data-ng-if="cameraCtrl.openedWindow.records"></camera-records>

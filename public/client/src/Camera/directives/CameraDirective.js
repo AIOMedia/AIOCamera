@@ -30,14 +30,14 @@ angular.module('AioCamera').directive('camera', [
                 });
 
                 // Initialize real-time connection to the server
-                var socket = io();
+                /*var socket = io();*/
 
                 // Catch server events
-                socket.on('snapshot', function (url) {
+                /*socket.on('snapshot', function (url) {
                     this.preview.url = url;
 
                     scope.$apply();
-                }.bind(this));
+                }.bind(this));*/
 
                 // Directive destructor
                 scope.$on('$destroy', function handleDestroyEvent() {
