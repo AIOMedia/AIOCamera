@@ -37,13 +37,50 @@ angular.module('AioCamera').controller('CameraController', [
          */
         this.modesAvailable = [ 'streaming', 'photo', 'video' ];
 
+        this.config = {
+            width: 1000,
+            height: 1000,
+
+            flipY: true,
+            flipX: false,
+
+            rotation: 0,
+
+            // Set the sharpness of the image (-100 to 100)
+            sharpness: 0,
+
+            // Set the contrast of the image (-100 to 100)
+            contrast: 0,
+
+            // Set the brightness of the image (0 is black, 100 is white)
+            brightness: 50,
+
+            saturation: 0, // -100 to 100
+            iso: 100, // 100 to 800
+            stabilisation: false, // VIDEO MODE ONLY
+            evCompensation: 0, // -25 to 25
+            exposureMode: 'auto',
+
+            // Set automatic white balance (AWB)
+            awb: 'auto',
+
+            // Set image effect
+            imageEffect: 'none',
+
+            // Set colour effect <U:V
+            colourEffect: null, // U:V (range 0 to 255)
+
+            // Specify the metering mode used for the preview and capture
+            meteringMode: 'average'
+        };
+
         /**
          * Camera preview settings
          * @type {{fillColor: string, url: string, fullscreen: boolean}}
          */
         this.preview = {
             fillColor : '#000100',
-            url       : 'camera/tmp/snapshot.jpg',
+            url       : 'files/camera/tmp/snapshot.jpg',
             fullscreen: true
         };
 
@@ -121,14 +158,14 @@ angular.module('AioCamera').directive('camera', [
                 });
 
                 // Initialize real-time connection to the server
-                var socket = io();
+                /*var socket = io();*/
 
                 // Catch server events
-                socket.on('snapshot', function (url) {
+                /*socket.on('snapshot', function (url) {
                     this.preview.url = url;
 
                     scope.$apply();
-                }.bind(this));
+                }.bind(this));*/
 
                 // Directive destructor
                 scope.$on('$destroy', function handleDestroyEvent() {
@@ -144,42 +181,7 @@ angular.module('AioCamera').directive('camera', [
  */
 angular.module('AioCamera').controller('CameraConfigController', [
     function CameraConfigController() {
-        this.parameters = {
-            width: 1000,
-            height: 1000,
-
-            flipY: true,
-            flipX: false,
-
-            rotation: 0,
-
-            // Set the sharpness of the image (-100 to 100)
-            sharpness: 0,
-
-            // Set the contrast of the image (-100 to 100)
-            contrast: 0,
-
-            // Set the brightness of the image (0 is black, 100 is white)
-            brightness: 50,
-
-            saturation: 0, // -100 to 100
-            iso: 100, // 100 to 800
-            stabilisation: false, // VIDEO MODE ONLY
-            evCompensation: 0, // -25 to 25
-            exposureMode: 'auto',
-
-            // Set automatic white balance (AWB)
-            awb: 'auto',
-
-            // Set image effect
-            imageEffect: 'none',
-
-            // Set colour effect <U:V
-            colourEffect: null, // U:V (range 0 to 255)
-
-            // Specify the metering mode used for the preview and capture
-            meteringMode: 'average'
-        };
+        this.parameters = {};
 
         this.rotations = {
             0: '0°',
@@ -264,6 +266,10 @@ angular.module('AioCamera').directive('cameraConfig', [
                 config: '='
             },
             link: function (scope, element, attrs, cameraConfigCtrl) {
+                scope.$watch('config', function (newValue) {
+                    cameraConfigCtrl.parameters = newValue;
+                });
+
                 // Directive destructor
                 scope.$on('$destroy', function handleDestroyEvent() {
 
@@ -304,6 +310,175 @@ angular.module('AioCamera').directive('cameraRecords', [
         };
     }
 ]);
+// File : public/client/src/Form/controllers/RangeFieldController.js
+/**
+ * Range Field Controller
+ */
+angular.module('AioCamera').controller('RangeFieldController', [
+    function RangeFieldController() {
+        /**
+         * Value of the fill
+         * @type {number}
+         */
+        this.value = null;
+
+        /**
+         * Percentage of data range filling (for rendering progressbar)
+         * @type {number}
+         */
+        this.fill = null;
+
+        /**
+         * Minimum value of the field
+         * @type {number}
+         */
+        this.min = null;
+
+        /**
+         * Maximum value of the field
+         * @type {number}
+         */
+        this.max = null;
+
+        /**
+         * Full data range between min and mx milestones
+         * @type {null}
+         */
+        this.dataRange = null;
+
+        /**
+         * Step between two values
+         * @type {number}
+         */
+        this.step = 1;
+
+        /**
+         * Total of steps into the data range
+         * @type {null}
+         */
+        this.steps = null;
+
+        /**
+         * Display min and max milestones
+         * @type {boolean}
+         */
+        this.showMilestones = true;
+
+        /**
+         * Display current value
+         * @type {boolean}
+         */
+        this.showValue = true;
+
+        /**
+         * Set value of the field
+         * @param {number} value
+         */
+        this.setValue = function (value) {
+            value = angular.isDefined(value) ? Number(value) : null;
+            if (value !== this.value) {
+                this.value = value;
+                this.calculateFill();
+            }
+        };
+
+        /**
+         * Set min milestone
+         * @param {number} value
+         */
+        this.setMin = function setMin(value) {
+            value = angular.isDefined(value) ? Number(value) : null;
+            if (value !== this.min) {
+                this.min = value;
+                this.calculateDataRange();
+                this.calculateFill();
+            }
+        };
+
+        /**
+         * Set max milestone
+         * @param {number} value
+         */
+        this.setMax = function setMax(value) {
+            value = angular.isDefined(value) ? Number(value) : null;
+            if (value !== this.max) {
+                this.max = value;
+                this.calculateDataRange();
+                this.calculateFill();
+            }
+        };
+
+        /**
+         * Set step
+         * @param {number} value
+         */
+        this.setStep = function setStep(value) {
+            value = angular.isDefined(value) ? Number(value) : 1;
+            if (value !== this.step) {
+                this.step = value;
+                this.calculateSteps();
+            }
+        };
+
+        /**
+         * Set show value flag
+         * @param {number} value
+         */
+        this.setShowValue = function setShowValue(value) {
+            this.showValue = !(angular.isDefined(value) && ('false' == value || !value));
+        };
+
+        /**
+         * Set show milestones flag
+         * @param {number} value
+         */
+        this.setShowMilestones = function setShowMilestones(value) {
+            this.showMilestones = !(angular.isDefined(value) && ('false' == value || !value));
+        };
+
+        /**
+         * Calculate percentage of filling
+         */
+        this.calculateFill = function calculateFill() {
+            // Calculate width
+            this.fill = (this.value - this.min) * 100 / this.dataRange;
+        };
+
+        /**
+         * Calculate data range of the field
+         */
+        this.calculateDataRange = function calculateDataRange() {
+            this.dataRange = null;
+            if (typeof(this.min) !== 'undefined' && null !== this.min && typeof(this.max) !== 'undefined' && null !== this.max) {
+                // Validate min and max values
+                if (this.max <= this.min) {
+                    // Min value is greater than max value
+                    throw new Error('RangeField : `min` (' + this.min + ') value can not be greater than `max` (' + this.max + ') value.');
+                }
+
+                this.dataRange = this.max - this.min;
+
+                this.calculateSteps();
+            }
+        };
+
+        /**
+         * Calculate number of steps
+         */
+        this.calculateSteps = function calculateSteps() {
+            this.steps = null;
+            if (typeof (this.dataRange) !== 'undefined' && null !== this.dataRange) {
+                // Validate step value
+                if (this.step > this.dataRange) {
+                    // Step is greater than the full data range between min and max
+                    throw new Error('RangeFieldDirective :  `step` (' + this.step + ') must be smaller than the full data range between `min` (' + this.min + ') and `max` (' + this.max + ') milestones.');
+                }
+
+                this.steps = Math.floor(this.dataRange / this.step);
+            }
+        }
+    }
+]);
 // File : public/client/src/Form/directives/RadioFieldDirective.js
 /**
  * Radio Field
@@ -331,38 +506,156 @@ angular.module('AioCamera').directive('radioField', [
 ]);
 // File : public/client/src/Form/directives/RangeFieldDirective.js
 /**
- * Range Field
+ * Range Field Directive
  */
 angular.module('AioCamera').directive('rangeField', [
+    '$window',
     'VIEW_PATH',
-    function (VIEW_PATH) {
-        var defaultOptions = {
-            step  : 1,
-            min   : 0,
-            max   : 100,
-            showMilestones: true
-        };
-
+    function ($window, VIEW_PATH) {
         return {
             restrict: 'E',
             replace: true,
             templateUrl: VIEW_PATH + '/Form/range-field.html',
+            controller: 'RangeFieldController',
+            controllerAs: 'rangeField',
             scope: {
-                step           : '=?',
-                min            : '=?',
-                max            : '=?',
-                value          : '=?',
-                showMilestones : '=?'
+                value          : '=',
+                min            : '@',
+                max            : '@',
+                step           : '@?',
+                showMilestones : '@?',
+                showValue      : '@?'
             },
-            link: function (scope, element, attrs) {
-                scope.step  = angular.isDefined(scope.step)  ? scope.step  : defaultOptions.step;
-                scope.min   = angular.isDefined(scope.min)   ? scope.min   : defaultOptions.min;
-                scope.max   = angular.isDefined(scope.max)   ? scope.max   : defaultOptions.max;
-                scope.value = angular.isDefined(scope.value) ? scope.value : defaultOptions.value;
-                scope.showMilestones = angular.isDefined(scope.showMilestones) ? scope.showMilestones : defaultOptions.showMilestones;
+            link: function (scope, element, attrs, rangeFieldCtrl) {
+                // Watch properties
+                scope.$watch('value', function (newValue) {
+                    rangeFieldCtrl.setValue(newValue);
+                }, true);
 
-                // Calculate width
+                scope.$watch('min', function (newValue) {
+                    rangeFieldCtrl.setMin(newValue);
+                }, true);
 
+                scope.$watch('max', function (newValue) {
+                    rangeFieldCtrl.setMax(newValue);
+                }, true);
+
+                scope.$watch('step', function (newValue) {
+                    rangeFieldCtrl.setStep(newValue);
+                }, true);
+
+                scope.$watch('showMilestones', function (newValue) {
+                    rangeFieldCtrl.setShowMilestones(newValue);
+                }, true);
+
+                scope.$watch('showValue', function (newValue) {
+                    rangeFieldCtrl.setShowValue(newValue);
+                }, true);
+
+                var $progressBar     = element.find('.progress');
+                var $progressHandler = $progressBar.find('.progress-handler');
+
+                function changeValue(event) {
+                    // Get element position
+                    var position = $progressBar.offset();
+
+                    var elementStart = position.left;
+                    var elementWidth = $progressBar.width();
+                    var elementEnd   = elementStart + elementWidth;
+
+                    // Step count = NB values /
+                    var stepCount = Math.floor((rangeFieldCtrl.dataRange) / rangeFieldCtrl.step);
+                    var stepWidth = elementWidth / stepCount;
+
+                    // We only check for horizontal position
+                    var mousePosition = event.clientX;
+
+                    if (mousePosition <= elementStart) {
+                        // Set min value
+                        scope.value = rangeFieldCtrl.min;
+                    } else if (mousePosition >= elementEnd) {
+                        // Set max value
+                        scope.value = rangeFieldCtrl.max;
+                    } else {
+                        // Calculate nearest value
+                        var distFromMin = mousePosition - elementStart;
+                        var nbSteps = (distFromMin - (distFromMin % stepWidth)) / stepWidth;
+
+                        if ((distFromMin % stepWidth) > (rangeFieldCtrl.step / 2)) {
+                            // Floor to greater integer
+                            nbSteps++;
+                        }
+
+                        scope.value = Math.floor(rangeFieldCtrl.min + (nbSteps * rangeFieldCtrl.step));
+                    }
+
+                    scope.$apply();
+                }
+
+                var dragged = false;
+
+                function dragStart(event) {
+                    if (event.target == $progressHandler.get()[0] && !dragged) {
+                        // Focus the handler
+                        $progressHandler.get()[0].focus();
+
+                        dragged = true;
+
+                        // Create events
+                        $window.addEventListener('mousemove', changeValue, true);
+
+                        event.preventDefault();
+                    }
+                }
+
+                function dragEnd(event) {
+                    if (dragged) {
+                        dragged = false;
+
+                        // Remove events
+                        $window.removeEventListener('mousemove', changeValue, true);
+                    }
+                }
+
+                function click(event) {
+                    if (!dragged) {
+                        changeValue(event);
+                    }
+                }
+
+                // Initialize events
+                $window.addEventListener('mousedown', dragStart, true);
+                $window.addEventListener('mouseup', dragEnd, true);
+
+                $progressBar.get()[0].addEventListener('click', click, true);
+
+                $progressHandler.get()[0].addEventListener('focus', function (event) {
+                    console.log('focusin');
+
+                    $window.addEventListener('keydown', function (event) {
+
+                    }, true);
+
+                    $window.addEventListener('keypress', function (event) {
+
+                    }, true);
+
+                    $window.addEventListener('keyup', function (event) {
+
+                    }, true);
+                }, true);
+
+                $progressHandler.get()[0].addEventListener('blur', function (event) {
+                    console.log('focusout');
+                }, true);
+
+                // Directive destroy event
+                scope.$on('$destroy', function() {
+                    $window.removeEventListener('mousedown', dragStart, true);
+                    $window.removeEventListener('mouseup', dragEnd, true);
+
+                    $progressBar.get()[0].removeEventListener('click', click, true);
+                });
             }
         };
     }
