@@ -1,0 +1,80 @@
+.range-field {
+    .progress {
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+        overflow: visible;
+
+        .progress-bar {
+            border-top-left-radius: @border-radius-base;
+            border-bottom-left-radius: @border-radius-base;
+
+            // Disable transitions which make slider lags
+            -webkit-transition: none;
+            -o-transition: none;
+            transition: none;
+
+            &.full {
+                border-top-right-radius: @border-radius-base;
+                border-bottom-right-radius: @border-radius-base;
+            }
+        }
+
+        .progress-handler {
+            position: absolute;
+            z-index: 2;
+
+            @progress-handler-width: @line-height-computed;
+            @progress-handler-height: @line-height-computed;
+
+            height: @progress-handler-width;
+            width: @progress-handler-height;
+
+            top: 0;
+            margin-left: -(floor(@progress-handler-width / 2));
+            border-radius: @progress-handler-width;
+            box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.25), 0 0 2px 0 rgba(0, 0, 0, 0.25);
+            padding: 0;
+            border: 4px solid white;
+            background-color: #ddd;
+
+
+            &:hover, &:focus {
+                box-shadow: inset 0 0 2px 0 rgba(0, 0, 0, 0.75), 0 0 2px 0 rgba(0, 0, 0, 0.25);
+                background-color: #ccc;
+            }
+        }
+    }
+}
+
+@media (min-width: @screen-sm-min) {
+    .range-field {
+        padding-top: (@padding-base-vertical + 1);
+        padding-bottom: (@padding-base-vertical + 1);
+    }
+}
+
+.form-horizontal {
+    .form-group-lg {
+        @media (min-width: @screen-sm-min) {
+            .range-field {
+                padding-top: ((@padding-large-vertical * @line-height-large) + 1);
+                padding-bottom: ((@padding-large-vertical * @line-height-large) + 1);
+            }
+        }
+    }
+    .form-group-sm {
+        @media (min-width: @screen-sm-min) {
+            .range-field {
+                padding-top: (@padding-small-vertical + 1);
+                padding-bottom: (@padding-small-vertical + 1);
+            }
+        }
+    }
+}
+
+.switch-field, .radio-field {
+    .btn-primary.active {
+        background-color: @brand-primary;
+    }
+}

@@ -1,0 +1,32 @@
+.form-horizontal {
+    .form-group {
+        margin-bottom: 0 !important;
+        border-bottom: 1px solid #ddd;
+
+        padding-top: @form-group-margin-bottom;
+        padding-bottom: @form-group-margin-bottom;
+
+
+        &.odd {
+            background-color: #f8f8f8;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .control-label {
+            text-align: left;
+
+            > .fa, > .fa-stack {
+                margin-right: 10px;
+            }
+
+            > .fa-stack {
+                line-height: 1em;
+                height: 1em;
+                width: (18em / 14); // Same as .fa
+            }
+        }
+    }
+}
